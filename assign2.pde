@@ -124,18 +124,6 @@ void draw(){
          }
          image(imgRightCar2, rightCar2X, rightCar2Y);
   
-         //frog boundary detection
-            if (frogX < 0){
-              frogX = 0;
-            } else if (frogX+frogW > width) {
-              frogX = width - frogW ;
-            }
-            if ( frogY + frogH > height ) {
-              frogY = height - frogH;
-            } else if ( frogY < pondY+32 ){
-              gameState = GAME_WIN;
-            }
-            
          float frogCX = frogX+frogW/2;
          float frogCY = frogY+frogH/2;
        
@@ -196,23 +184,35 @@ void draw(){
 
 }
 void keyPressed() {
-    if (key == CODED /*still needs something*/) {
+    if (key == CODED && gameState == GAME_RUN) {
       switch(keyCode){
         case UP:
-          frogY -= speed;
+          frogY -= speed*3;
           break;
         case DOWN:
-          frogY += speed;
+          frogY += speed*3;
           break;
         case LEFT:
-          frogX -= speed;
+          frogX -= speed*3;
           break;
         case RIGHT:
-          frogX += speed;
+          frogX += speed*3;
           break;
       }
+      //frog boundary detection
+         if (frogX < 0){
+           frogX = 0;
+         } else if (frogX+frogW >= width) {
+              frogX = width-frogW;
+         }
+         if ( frogY + frogH >= height ) {
+           frogY = height - frogH;
+         } else if ( frogY < pondY +32 ){
+           gameState = GAME_WIN;
+         }      
     }
-    if(key==ENTER /*still needs something*/){
+    if(key==ENTER && (gameState == GAME_START||
+    gameState == GAME_LOSE || gameState == GAME_WIN)){
       gameState = GAME_RUN;
       life=3;
       frogX = frogInitX;
